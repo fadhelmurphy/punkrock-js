@@ -28,3 +28,6 @@ jspm_packages/
 dist/bundle.js
 dist/main.css
 dist/assets/*
+
+yarn*
+package-*
