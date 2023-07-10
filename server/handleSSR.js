@@ -51,15 +51,15 @@ export const handleSSR = (req, res, next) => {
               .map((item) => outputFileSystem.readFileSync(path.resolve(outputPath, item)))
               .join("\n")}
             </style>
-            ${normalizeAssets(assetsByChunkName.main)
-              .filter((path) => path.endsWith(".js"))
-              .map((path) => `<script src="${path}" defer></script>`)
-              .join("\n")}
           </head>
   
           <body>
-            <div id="app">${markup}</div>
+            <div id="root">${markup}</div>
             <script id="__PUNK_DATA__" type="application/json">${serialize({serverData: data})}</script>
+            ${normalizeAssets(assetsByChunkName.main)
+              .filter((path) => path.endsWith(".js"))
+              .map((path) => `<script src="${path}"></script>`)
+              .join("\n")}
           </body>
         </html>
       `)

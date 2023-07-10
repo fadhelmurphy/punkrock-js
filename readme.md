@@ -7,9 +7,9 @@ both _Server Side Rendering_ and _Client Side Rendering_
 
 ### What are we using in this project?
 
-- React 16
+- React 18
 - Node 10
-- Webpack 4
+- Webpack 5
 - Babel 7
 
 ---

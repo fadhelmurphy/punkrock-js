@@ -8,7 +8,6 @@ const target = process.env.NODE_ENV === "production" ? "browserslist" : "web";
 
 const clientConfig = {
   entry: ["./src/index.js", 'webpack-hot-middleware/client?timeout=1000&reload=true',
-  'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors
 
 ],
   mode,
@@ -72,7 +71,7 @@ const clientConfig = {
   devServer: {
     // static: "./dist",
     hot: true,
-    watchFiles: ['src/**/*.js', 'assets/**/*'],
+    // watchFiles: ['src/**/*.js', 'assets/**/*'],
     port: 3000,
     host: "localhost",
     historyApiFallback: true,
