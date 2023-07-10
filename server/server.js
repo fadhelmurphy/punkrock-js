@@ -13,6 +13,7 @@ const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const config = require('../webpack.config.js');
+const wpClient = config[0]
 
 
 const { env } = require('../config');
@@ -21,30 +22,27 @@ require('./setup').setup();
 
 const app = express();
 
-
-const devServerEnabled = true;
-
-if (devServerEnabled) {
-
-  config.mode = "development";
-
-  const compiler = webpack(config);
-
-  //Enable "webpack-dev-middleware"
-  app.use(webpackDevMiddleware(compiler, {
-    publicPath: config.output.publicPath
-  }));
-
-  //Enable "webpack-hot-middleware"
-  app.use(webpackHotMiddleware(compiler));
-}
-
 const router = express.Router();
 
 router.use(helmet());
 router.use(responseTime());
 router.use(cors());
 router.use(cookieParser());
+
+wpClient.mode = "development";
+
+const compiler = webpack(wpClient);
+
+//Enable "webpack-dev-middleware"
+app.use(webpackDevMiddleware(compiler, {
+  publicPath: wpClient.output.publicPath,
+  serverSideRender: true,
+}));
+
+//Enable "webpack-hot-middleware"
+app.use(webpackHotMiddleware(compiler, {
+  'heartbeat' : 10 * 1000
+}));
 
 app.use(
   bodyParser.urlencoded({
@@ -68,7 +66,7 @@ app.engine(
 app.set('view engine', 'html');
 
 router.use(
-  express.static(path.join(__dirname, '../', 'dist'), {
+  express.static(path.join(__dirname, '../', 'dist/build'), {
     redirect: false,
   })
 );

@@ -1,8 +1,18 @@
+const path = require("path");
 const webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const nodeExternals = require("webpack-node-externals");
 
-module.exports = {
-  entry: ["./src/index.js", 'webpack-hot-middleware/client?reload=true&timeout=1000'],
+const mode = process.env.NODE_ENV || "development";
+const target = process.env.NODE_ENV === "production" ? "browserslist" : "web";
+
+const clientConfig = {
+  entry: ["./src/index.js", 'webpack-hot-middleware/client?timeout=1000&reload=true',
+  'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors
+
+],
+  mode,
+  target,
   module: {
     rules: [
       {
@@ -45,7 +55,7 @@ module.exports = {
     extensions: ["*", ".js", ".jsx"]
   },
   output: {
-    path: __dirname + "/dist",
+    path: __dirname + '/dist/build',
     publicPath: "/",
     filename: "bundle.js",
 		clean: true,
@@ -60,19 +70,45 @@ module.exports = {
     })
   ],
   devServer: {
-    static: "./dist",
+    // static: "./dist",
     hot: true,
+    watchFiles: ['src/**/*.js', 'assets/**/*'],
     port: 3000,
     host: "localhost",
     historyApiFallback: true,
 		compress: true,
-    liveReload: true,
-    devMiddleware: {
-      // index: true,
-      // mimeTypes: { phtml: 'text/html' },
-      // publicPath: "/",
-      serverSideRender: true,
-      // writeToDisk: true,
-    },
+    // liveReload: true,
+    // devMiddleware: {
+    //   // index: true,
+    //   // mimeTypes: { phtml: 'text/html' },
+    //   // publicPath: "/",
+    //   serverSideRender: true,
+    //   // writeToDisk: true,
+    // },
   }
-};
+}
+
+const serverConfig = {
+  mode,
+  target,
+  entry: "./index.js",
+  externals: [nodeExternals()],
+  output: {
+    path: __dirname + '/dist',
+    filename: "server.js",
+    library: {
+      type: "module",
+    },
+  },
+  experiments: {
+    outputModule: true,
+  },
+  module: {
+    rules: [
+      { test: /\.(js)$/, use: "babel-loader" },
+      { test: /\.css$/, use: [MiniCssExtractPlugin.loader, "css-loader"] },
+    ],
+  },
+}
+
+module.exports = [clientConfig, serverConfig];

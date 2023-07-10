@@ -5,7 +5,7 @@ const { str, num, bool } = envalid;
 
 require('dotenv').config({ silent: true });
 
-const env = envalid.cleanEnv(
+export const env = envalid.cleanEnv(
   process.env,
   Object.assign(
     {},
@@ -13,13 +13,16 @@ const env = envalid.cleanEnv(
       APP_PORT: num({ default: 3000 }),
       NODE_ENV: str({ default: 'development' }),
       SERVER_RENDERED: bool({ default: true }),
+      APP_HOST: str({ default: 'http://localhost:' }),
     }
   )
 );
 
-const clientEnv = _.pick(env, ['APP_PORT', 'NODE_ENV']);
+export const clientEnv = _.pick(env, ['APP_PORT', 'NODE_ENV']);
 
-module.exports = {
+export {path}
+
+export default {
   path,
   env,
   clientEnv,

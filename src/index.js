@@ -4,9 +4,9 @@ import ReactDOM from 'react-dom';
 import App from './app';
 import { BrowserRouter } from 'react-router-dom';
 
-const data =  JSON.parse(document?.getElementById('__NEXT_DATA__')?.textContent)?.serverData || "TEST CSR"
+const data = typeof window !== "undefined" && JSON.parse(document?.getElementById('__PUNK_DATA__')?.textContent)?.serverData || "TEST CSR"
 console.log(data, "APP-CLIENT")
-ReactDOM.hydrate(
+ReactDOM.render(
   <BrowserRouter>
   <App serverData={data} />
   </BrowserRouter>,
