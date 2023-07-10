@@ -11,7 +11,12 @@ const data =
   "TEST CSR";
 console.log(data, "APP-CLIENT");
 
-ReactDOM.hydrateRoot(document.getElementById('root'), 
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
 <BrowserRouter>
   <App serverData={data} />
 </BrowserRouter>);
+
+// if (module.hot) {
+//   module.hot.accept()
+// }

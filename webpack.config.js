@@ -8,10 +8,10 @@ const target = process.env.NODE_ENV === "production" ? "browserslist" : "web";
 
 const clientConfig = {
   entry: ["./src/index.js", 'webpack-hot-middleware/client?timeout=1000&reload=true',
-
+'webpack/hot/dev-server'
 ],
   mode,
-  target,
+  target: "web",
   module: {
     rules: [
       {
@@ -69,7 +69,6 @@ const clientConfig = {
     })
   ],
   devServer: {
-    // static: "./dist",
     hot: true,
     // watchFiles: ['src/**/*.js', 'assets/**/*'],
     port: 3000,
@@ -81,8 +80,8 @@ const clientConfig = {
     //   // index: true,
     //   // mimeTypes: { phtml: 'text/html' },
     //   // publicPath: "/",
-    //   serverSideRender: true,
-    //   // writeToDisk: true,
+    //   // serverSideRender: true,
+    //   writeToDisk: true,
     // },
   }
 }

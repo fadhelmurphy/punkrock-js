@@ -38,8 +38,8 @@ export const handleSSR = (req, res, next) => {
   const { assetsByChunkName, outputPath } = jsonWebpackStats;
 
 
-      res.setHeader('Content-type','text/html')
-      res.send(`
+  res.set("Content-Type", "text/html");
+      res.write(`
       <!DOCTYPE html>
         <html>
           <head>
@@ -62,6 +62,6 @@ export const handleSSR = (req, res, next) => {
               .join("\n")}
           </body>
         </html>
-      `)
+      `);
     }).catch(next)
 };
